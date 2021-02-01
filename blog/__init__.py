@@ -6,6 +6,14 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
-migrate = Migrate(db, app)
+migrate = Migrate(app, db)
 
 from blog import models, routes
+
+
+@app.shell_context_processor
+def make_shell_context():
+    return {
+        "db": db,
+        "Entry": models.Entry
+    }
